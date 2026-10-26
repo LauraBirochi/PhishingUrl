@@ -1,0 +1,1210 @@
+/* ==========================================================================
+   LinkSeguro — Design System
+   Compartilhado entre a interface estática (index.html) e o app Streamlit
+   (app.py injeta este arquivo). Regras de página inteira ficam escopadas em
+   `.static-page`; regras específicas do Streamlit ficam na seção final.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Tokens de design
+   ========================================================================== */
+:root {
+  /* Superfícies */
+  --bg-primary: #f4f6fb;
+  --bg-gradient: linear-gradient(180deg, #f8fafd 0%, #eef2f9 100%);
+  --surface-card: #ffffff;
+  --surface-subtle: #f8fafc;
+
+  /* Texto (todos com contraste >= 4.5:1 sobre branco e sobre --bg-primary) */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #586679;
+
+  /* Marca */
+  --brand-blue: #2563eb;
+  --brand-blue-hover: #1d4ed8;
+  --brand-blue-soft: #eff6ff;
+  --brand-blue-ring: rgba(37, 99, 235, 0.35);
+
+  /* Estados semânticos (texto escuro sobre fundo claro, AA) */
+  --safe-color: #047857;
+  --safe-bg: #ecfdf5;
+  --safe-border: #6ee7b7;
+
+  --warning-color: #b45309;
+  --warning-bg: #fffbeb;
+  --warning-border: #fcd34d;
+
+  --danger-color: #b91c1c;
+  --danger-bg: #fef2f2;
+  --danger-border: #fca5a5;
+
+  /* Bordas */
+  --border-light: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  /* Escala de espaçamento */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Raios */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+
+  /* Sombras (dois níveis) */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 12px 24px -8px rgba(15, 23, 42, 0.08);
+
+  /* Tipografia */
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --fs-display: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+
+  /* Movimento */
+  --transition: 0.2s ease;
+}
+
+/* ==========================================================================
+   2. Base da página estática (escopada: não afeta o Streamlit)
+   ========================================================================== */
+.static-page,
+.static-page *,
+.static-page *::before,
+.static-page *::after {
+  box-sizing: border-box;
+}
+
+.static-page * {
+  margin: 0;
+  padding: 0;
+}
+
+html:has(.static-page),
+.static-page {
+  min-height: 100%;
+}
+
+.static-page {
+  font-family: var(--font-family);
+  background: var(--bg-gradient);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Utilitário de acessibilidade: visível apenas para leitores de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Link para pular direto ao conteúdo (aparece ao receber foco por teclado) */
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 2000;
+  padding: var(--space-2) var(--space-4);
+  background: var(--brand-blue);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Foco visível consistente para todos os controles interativos */
+.static-page :is(a, button, input):focus-visible {
+  outline: 3px solid var(--brand-blue);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   3. Marca (cabeçalho) — compartilhado
+   ========================================================================== */
+.brand-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.logo-shield {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+  background: var(--surface-card);
+  color: var(--brand-blue);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.brand-title {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.brand-subtitle {
+  max-width: 460px;
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ==========================================================================
+   4. Layout da página estática
+   ========================================================================== */
+.top-nav {
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+}
+
+.top-nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.nav-brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px var(--space-3);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+}
+
+.nav-brand-tag::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-blue);
+}
+
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.view-section {
+  display: none;
+  width: 100%;
+  padding: var(--space-6) var(--space-4);
+}
+
+.view-section.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fade-in 0.3s ease-out;
+}
+
+.content-container {
+  width: 100%;
+  max-width: 680px;
+  text-align: center;
+}
+
+.footer-note {
+  width: 100%;
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.footer-note p {
+  max-width: 580px;
+  margin: 0 auto;
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   5. Botões (primário, secundário, ícone)
+   ========================================================================== */
+.tutorial-trigger-btn,
+.offcanvas-action-btn,
+.back-btn,
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+/* Primário */
+.submit-btn,
+.offcanvas-action-btn {
+  padding: 0 var(--space-5);
+  color: #ffffff;
+  background: var(--brand-blue);
+  border: 1px solid var(--brand-blue);
+}
+
+.submit-btn:hover,
+.offcanvas-action-btn:hover {
+  background: var(--brand-blue-hover);
+  border-color: var(--brand-blue-hover);
+}
+
+.submit-btn:active,
+.offcanvas-action-btn:active {
+  transform: translateY(1px);
+}
+
+/* Secundário */
+.tutorial-trigger-btn,
+.back-btn {
+  padding: 0 var(--space-4);
+  color: var(--text-primary);
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+}
+
+.tutorial-trigger-btn {
+  color: var(--brand-blue);
+}
+
+.tutorial-trigger-btn:hover,
+.back-btn:hover {
+  background: var(--brand-blue-soft);
+  border-color: var(--brand-blue);
+}
+
+.offcanvas-action-btn {
+  width: 100%;
+}
+
+.submit-btn .btn-arrow {
+  transition: transform var(--transition);
+}
+
+.submit-btn:hover .btn-arrow {
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
+   6. Campo de busca (estático)
+   ========================================================================== */
+.search-form {
+  width: 100%;
+}
+
+.search-bar-wrapper {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding: 6px 8px 6px 18px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-bar-wrapper:focus-within {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px var(--brand-blue-ring), var(--shadow-md);
+}
+
+.search-bar-wrapper.has-error {
+  border-color: var(--danger-color);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.25);
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.input-icon-left {
+  display: flex;
+  align-items: center;
+  margin-right: var(--space-3);
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.search-bar-wrapper:focus-within .input-icon-left {
+  color: var(--brand-blue);
+}
+
+.url-input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding-right: var(--space-2);
+  font-family: var(--font-family);
+  font-size: var(--fs-md);
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+}
+
+/* O foco é indicado pelo contêiner (:focus-within), então o outline do campo é suprimido */
+.static-page .url-input:focus-visible {
+  outline: none;
+}
+
+.url-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.clear-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-right: var(--space-1);
+  color: var(--text-tertiary);
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.clear-btn.visible {
+  display: flex;
+}
+
+.clear-btn:hover {
+  color: var(--text-primary);
+  background: var(--surface-subtle);
+}
+
+.submit-btn {
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.validation-message {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--danger-color);
+}
+
+.validation-message.active {
+  display: flex;
+}
+
+/* ==========================================================================
+   7. Tela de carregamento (estática)
+   ========================================================================== */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+}
+
+.pulse-scanner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: var(--space-5);
+}
+
+.pulse-core {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  color: var(--brand-blue);
+  background: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+}
+
+.pulse-ring {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  background: var(--brand-blue-ring);
+  animation: pulse-scale 1.8s ease-out infinite;
+}
+
+@keyframes pulse-scale {
+  0%   { transform: scale(0.85); opacity: 0.8; }
+  100% { transform: scale(1.6);  opacity: 0; }
+}
+
+.loading-title {
+  margin-bottom: 6px;
+  font-size: var(--fs-xl);
+  font-weight: 700;
+}
+
+.loading-url-display {
+  max-width: 100%;
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 6px;
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+  background: var(--border-light);
+  border-radius: var(--radius-pill);
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  background: var(--brand-blue);
+  border-radius: var(--radius-pill);
+  transition: width 0.35s ease;
+}
+
+.loading-step {
+  min-height: 1.5em;
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   8. Resultado — compartilhado (estático + Streamlit)
+   ========================================================================== */
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.result-brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-4);
+  padding: 6px var(--space-3);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+}
+
+.result-card {
+  width: 100%;
+  padding: var(--space-6);
+  background: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.url-analyzed-box {
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+.box-caption {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.url-display-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.url-protocol-badge {
+  flex-shrink: 0;
+  padding: 3px var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--border-light);
+  border-radius: 6px;
+}
+
+.url-protocol-badge.secure {
+  color: #065f46;
+  background: #d1fae5;
+}
+
+.url-protocol-badge.insecure {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.analyzed-url-text {
+  min-width: 0;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.verdict-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  padding: var(--space-5);
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+}
+
+.verdict-banner.safe    { background: var(--safe-bg);    border-color: var(--safe-border); }
+.verdict-banner.warning { background: var(--warning-bg); border-color: var(--warning-border); }
+.verdict-banner.danger  { background: var(--danger-bg);  border-color: var(--danger-border); }
+
+.verdict-banner.safe .verdict-title    { color: var(--safe-color); }
+.verdict-banner.warning .verdict-title { color: var(--warning-color); }
+.verdict-banner.danger .verdict-title  { color: var(--danger-color); }
+
+.verdict-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: var(--surface-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.verdict-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.verdict-label {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.verdict-title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.confidence-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.confidence-number {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.confidence-sub {
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.result-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.academic-note {
+  margin-top: var(--space-4);
+  max-width: 480px;
+  font-size: var(--fs-xs);
+  text-align: center;
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   9. Avisos (página inacessível / bloqueio anti-SSRF) — Streamlit
+   ========================================================================== */
+.notice-box {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+  padding: var(--space-4) var(--space-5);
+  color: var(--warning-color);
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: var(--radius-md);
+}
+
+.notice-box.blocked {
+  color: var(--danger-color);
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
+}
+
+.notice-box svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notice-box h3 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: inherit;
+}
+
+.notice-box p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.notice-box p + p {
+  margin-top: var(--space-2);
+}
+
+/* ==========================================================================
+   10. Minitutorial (offcanvas estático)
+   ========================================================================== */
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.tutorial-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.tutorial-offcanvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--surface-card);
+  box-shadow: -8px 0 32px rgba(15, 23, 42, 0.16);
+  transform: translateX(100%);
+  visibility: hidden; /* fora de tela => não focável por teclado */
+  transition: transform 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.tutorial-offcanvas.active {
+  transform: translateX(0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.offcanvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.offcanvas-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.offcanvas-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--brand-blue);
+  background: var(--brand-blue-soft);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.offcanvas-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.offcanvas-subtitle {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+.offcanvas-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--text-secondary);
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition), color var(--transition);
+}
+
+.offcanvas-close-btn:hover {
+  color: var(--text-primary);
+  background: var(--surface-subtle);
+}
+
+.offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  flex: 1;
+  padding: var(--space-5);
+  overflow-y: auto;
+}
+
+.tutorial-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.step-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--brand-blue);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.step-content h3 {
+  margin-bottom: var(--space-1);
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.step-content p {
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.step-content code {
+  padding: 1px 6px;
+  font-size: 0.8125rem;
+  color: var(--brand-blue-hover);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+}
+
+.tutorial-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: var(--radius-md);
+}
+
+.callout-icon {
+  flex-shrink: 0;
+  color: var(--warning-color);
+}
+
+.callout-text {
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.offcanvas-footer {
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface-subtle);
+  border-top: 1px solid var(--border-light);
+}
+
+/* ==========================================================================
+   11. Integração com o Streamlit (app.py)
+   Seletores por data-testid; os resets de página NÃO são aplicados aqui.
+   ========================================================================== */
+.stApp {
+  background: var(--bg-gradient);
+  background-color: var(--bg-primary);
+  font-family: var(--font-family);
+}
+
+/* Cabeçalho: mantém o botão de abrir/fechar a barra lateral e esconde o resto */
+header[data-testid="stHeader"] {
+  background: transparent;
+}
+
+[data-testid="stToolbar"],
+#MainMenu,
+footer:not(.footer-note) {
+  visibility: hidden;
+}
+
+.stApp .block-container {
+  max-width: 820px;
+  padding: var(--space-6) var(--space-4) var(--space-7);
+}
+
+/* Títulos HTML dentro do markdown do Streamlit herdam estilos globais de h1/h2: neutralizamos */
+.stApp .brand-title,
+.stApp .verdict-title,
+.stApp .notice-box h3,
+.stApp .side-title {
+  padding: 0;
+  font-family: var(--font-family);
+  letter-spacing: normal;
+}
+
+.stApp .brand-title {
+  font-size: var(--fs-display);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 var(--space-2);
+}
+
+.stApp .verdict-title {
+  margin: 0;
+  font-size: var(--fs-xl);
+  line-height: 1.2;
+}
+
+.stApp .notice-box h3 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--fs-md);
+}
+
+/* Formulário sem moldura extra: o campo e o botão são o foco da tela */
+[data-testid="stForm"] {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+/* Campo de URL */
+[data-testid="stTextInput"] [data-baseweb="input"] {
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+[data-testid="stTextInput"] [data-baseweb="input"]:focus-within {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px var(--brand-blue-ring), var(--shadow-md);
+}
+
+[data-testid="stTextInput"] [data-baseweb="base-input"] {
+  background: transparent;
+  border-radius: var(--radius-pill);
+}
+
+[data-testid="stTextInput"] input {
+  padding: var(--space-4) var(--space-5);
+  font-family: var(--font-family);
+  font-size: var(--fs-md);
+  color: var(--text-primary);
+}
+
+[data-testid="stTextInput"] input::placeholder {
+  color: var(--text-tertiary);
+  opacity: 1;
+}
+
+/* Botão primário "Iniciar análise" */
+[data-testid="stFormSubmitButton"] button {
+  width: 100%;
+  min-height: 48px;
+  font-family: var(--font-family);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--brand-blue);
+  border: 1px solid var(--brand-blue);
+  border-radius: var(--radius-pill);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+[data-testid="stFormSubmitButton"] button:hover {
+  color: #ffffff;
+  background: var(--brand-blue-hover);
+  border-color: var(--brand-blue-hover);
+}
+
+[data-testid="stFormSubmitButton"] button:focus-visible {
+  outline: 3px solid var(--brand-blue);
+  outline-offset: 3px;
+}
+
+[data-testid="stFormSubmitButton"] button p {
+  color: inherit;
+}
+
+/* Alertas nativos (st.success / st.error / st.warning) */
+[data-testid="stAlert"] {
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+}
+
+/* Cartão expansível das 51 características */
+[data-testid="stExpander"] details {
+  background: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+/* Resultado dentro do Streamlit ocupa a mesma largura do formulário */
+.stApp .result-container {
+  max-width: none;
+  margin-top: var(--space-4);
+}
+
+/* Barra lateral */
+[data-testid="stSidebar"] {
+  background: var(--surface-card);
+  border-right: 1px solid var(--border-light);
+}
+
+.side-section + .side-section {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-light);
+}
+
+.stApp .side-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.side-text,
+.side-list {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.side-list {
+  padding-left: var(--space-4);
+}
+
+.side-list li + li {
+  margin-top: var(--space-3);
+}
+
+.side-list strong,
+.side-text strong {
+  color: var(--text-primary);
+}
+
+.side-caption {
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   12. Responsividade
+   ========================================================================== */
+@media (max-width: 640px) {
+  .top-nav {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .view-section {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .brand-subtitle {
+    font-size: var(--fs-sm);
+  }
+
+  .search-bar-wrapper {
+    height: 56px;
+    padding: 5px 6px 5px 14px;
+  }
+
+  .submit-btn {
+    height: 44px;
+    padding: 0 var(--space-4);
+  }
+
+  .result-card {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .verdict-banner {
+    flex-wrap: wrap;
+    padding: var(--space-4);
+  }
+
+  .confidence-badge {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--space-2);
+    width: 100%;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border-light);
+  }
+
+  .tutorial-offcanvas {
+    width: 100vw;
+  }
+
+  .stApp .block-container {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-brand-tag {
+    display: none;
+  }
+
+  .submit-btn .btn-text {
+    font-size: var(--fs-sm);
+  }
+}
+
+/* ==========================================================================
+   13. Preferência por movimento reduzido
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}

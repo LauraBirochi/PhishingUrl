@@ -1,0 +1,26 @@
+# Ambientes Virtuais
+venv/
+.venv/
+env/
+ENV/
+
+# Bytecode e Cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# IDEs e Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos de Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Variáveis de ambiente e segredos locais
+.env
+.streamlit/secrets.toml
