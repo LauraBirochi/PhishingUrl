@@ -1,7 +1,7 @@
 # Detecção em Tempo Real de URLs de Phishing com IA
 
 ## 🔗 Link Público da Aplicação
-* **Deploy no Streamlit:** [https://linkseguro-ai.streamlit.app](https://linkseguro-ai.streamlit.app)
+* **Deploy no Streamlit:** [https://phishingurl-4pre7ejrqpsbjip5gt4dkc.streamlit.app/](https://phishingurl-4pre7ejrqpsbjip5gt4dkc.streamlit.app/)
 
 ## 👥 Integrantes do Grupo
 * Laura Birochi (CT3037398)
