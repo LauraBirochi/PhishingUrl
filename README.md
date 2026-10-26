@@ -4,9 +4,9 @@
 * **Deploy no Streamlit:** [https://linkseguro-ai.streamlit.app](https://linkseguro-ai.streamlit.app)
 
 ## 👥 Integrantes do Grupo
-* Laura Birochi (RA: CT3037398)
-* Maria Clara Rosa Hespanhol (RA: CT3037657)
-* [Nome do Integrante 3] (RA: [INSERIR RA])
+* Laura Birochi (CT3037398)
+* Maria Clara Rosa Hespanhol (CT3037657)
+* Polayne da Silva Bastos (CT3038203)
 
 ## 📂 Repositório GitHub 
 * [https://github.com/LauraBirochi/PhishingUrl](https://github.com/LauraBirochi/PhishingUrl)
